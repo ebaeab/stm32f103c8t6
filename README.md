@@ -1,2 +1,1 @@
-# stm32f103c8t6
-rc522
+# stm32f103c8t6 stm32cubemx

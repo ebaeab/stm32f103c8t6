@@ -53,6 +53,19 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void delay_ms(unsigned int nms)
+{
+ unsigned int temp;
+ SysTick->LOAD = 9000*nms;
+ SysTick->VAL=0X00;//清空计数器
+ SysTick->CTRL=0X01;//使能，减到零是无动作，采用外部时钟源
+ do
+ {
+  temp=SysTick->CTRL;//读取当前倒计数值
+ }while((temp&0x01)&&(!(temp&(1<<16))));//等待时间到达
+    SysTick->CTRL=0x00; //关闭计数器
+    SysTick->VAL =0X00; //清空计数器
+}
 
 /* USER CODE END 0 */
 
@@ -93,8 +106,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    delay_ms(200);
     /* USER CODE BEGIN 3 */
+    HAL_GPIO_TogglePin(led_GPIO_Port, led_Pin);  
   }
   /* USER CODE END 3 */
 }
